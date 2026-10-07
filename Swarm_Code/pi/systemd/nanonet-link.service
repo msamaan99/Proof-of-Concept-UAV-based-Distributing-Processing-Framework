@@ -1,0 +1,25 @@
+[Unit]
+Description=NanoNet link supervisor (keeps wlan0 on the swarm network)
+# Wants, not Requires: if NetworkManager is briefly down this must keep running
+# and wait for it, not be taken down alongside it.
+Wants=NetworkManager.service
+After=NetworkManager.service
+
+[Service]
+Type=simple
+# Root is needed: nmcli cannot activate a connection or cycle the radio without it.
+User=root
+ExecStart=/usr/bin/python3 /home/PI_USER/pi_sensor/nanonet_link.py
+# The supervisor is the thing that is never supposed to stop.  If it dies for
+# any reason at all, including a clean exit, bring it straight back.
+Restart=always
+RestartSec=2
+# Unbuffered, or journalctl shows nothing until the process happens to flush —
+# which for a daemon that logs once every five minutes means a log that looks
+# dead while the service is working perfectly.
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

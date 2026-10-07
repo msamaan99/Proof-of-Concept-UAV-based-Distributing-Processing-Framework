@@ -1,0 +1,46 @@
+[Unit]
+Description=UAV Swarm MEC Node (processing layer: master or worker)
+# The processing layer reads its role from runtime/neighbors.json, which only
+# the network layer writes. Wants rather than Requires: mec_node.py waits for
+# that file on its own and says so in the log, which is more useful than
+# refusing to start.
+Wants=swarm_net.service
+After=swarm_net.service network.target
+
+# A board whose TensorRT engine is missing would otherwise restart every 10 s
+# for the whole demo. Five starts a minute is generous for a real fault and
+# still keeps the journal readable. `systemctl reset-failed mec_node` clears it.
+StartLimitIntervalSec=120
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=NANO_USER
+WorkingDirectory=/home/NANO_USER/yolov5/swarm
+
+# MANDATORY on a Jetson Nano. Without it `import numpy` aborts with SIGILL
+# (exit 132) before the first log line, and the failure prints nothing at all.
+# The interactive shell gets this from ~/.bashrc; a systemd unit does not.
+Environment=OPENBLAS_CORETYPE=ARMV8
+Environment=PYTHONUNBUFFERED=1
+
+# The scheduler used for unattended operation. A measurement run overrides it
+# on the command line instead — stop this service first, then run by hand:
+#   sudo systemctl stop mec_node
+#   cd ~/yolov5/swarm && MEC_SCHED=greedy MEC_RUN_FRAMES=5000 python3 mec_node.py
+Environment=MEC_SCHED=lyapunov
+# Frame budget in milliseconds. MUST match MEC_DEADLINE_MS on the ground
+# station, or its latency colours and jitter buffer describe a budget this node
+# is not enforcing.
+Environment=MEC_DEADLINE_MS=1200
+
+ExecStart=/usr/bin/python3 /home/NANO_USER/yolov5/swarm/mec_node.py
+
+Restart=always
+RestartSec=5
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,25 @@
+Metric,Lyapunov,Greedy (ECT),Round Robin,Fixed 35%,Fixed 65%
+Arrival rate (fps),39.7,39.7,39.7,39.7,39.7
+Run duration (s),126,126,126,126,126
+Total frames,"5,000","5,000","5,000","5,000","5,000"
+Delivered,"4,625","4,625","4,632","4,210","3,939"
+Dropped,375,375,368,790,"1,061"
+Drop %,7.50,7.50,7.36,15.80,21.22
+Main drop reason,DEADLINE_EXCEEDED,DEADLINE_EXCEEDED,DEADLINE_EXCEEDED,LOCAL_QUEUE_FULL,WORKER_LINK_BLOCKED
+Out-of-order %,44.30,52.84,46.39,58.17,77.00
+Avg total latency (ms),1146.11,1141.31,1136.86,1045.77,848.24
+P95 latency (ms),1239.10,1236.70,1238.60,1804.60,1528.00
+P99 latency (ms),1252.20,1245.50,1250.50,1816.70,1561.10
+Max latency (ms),1359.7,1372.8,1392.5,1828.8,1662.3
+Std deviation (ms),141.97,138.28,164.15,835.54,709.59
+Avg network RTT (ms),9.66,10.23,6.09,5.69,11.13
+Avg decision overhead (ms),0.1863,0.0971,0.0829,0.0796,0.0770
+Ran on master,"2,445","2,445","2,446","2,448","1,758"
+Ran on worker,"2,180","2,180","2,186","1,762","2,181"
+Scheduler offload %,47.14,47.14,47.19,35.24,64.84
+Delivered offload %,47.14,47.14,47.19,41.85,55.37
+Master GPU duty %,99,100,99,99,71
+Worker GPU duty %,99,99,99,80,99
+Master avg temp (C),45.74,45.92,49.85,45.35,49.34
+Master max temp (C),49.5,50.0,54.0,49.0,51.0
+Nano 1 max temp (C),43.5,45.0,49.5,41.5,46.0

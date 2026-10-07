@@ -1,0 +1,30 @@
+Metric,Lyapunov,Greedy (ECT),Round Robin
+GCS log,046,047,048
+Arrival rate (fps),29.8,29.8,34.0
+Run duration (s),168,168,147
+Total frames,"5,000","5,000","5,000"
+Delivered,"4,920","4,851","3,682"
+Dropped,80,149,"1,318"
+Drop %,1.60,2.98,26.36
+Drop reasons,DEADLINE_EXCEEDED x80,DEADLINE_EXCEEDED x149,"WORKER_LINK_BLOCKED x702, WORKER_RESULT_TIMEOUT x616"
+Sequence gaps,3,21,24
+Out-of-order %,65.30,55.89,40.06
+Avg latency (ms),1109.80,1135.87,1006.89
+P95 (ms),1248.50,1236.10,2638.60
+P99 (ms),1270.50,1265.70,2686.20
+Max (ms),1436.9,1351.4,2925.3
+Std deviation (ms),179.09,99.00,1143.28
+Avg network RTT (ms),4.11,4.81,852.82
+Avg decision overhead (ms),0.1886,0.0956,0.0322
+Median infer master (ms),50.70,51.25,50.90
+Median infer worker (ms),98.70,98.90,98.80
+k = worker/master,1.95,1.93,1.94
+p* predicted,33.94%,34.13%,34.00%
+Ran on master,"3,236","3,174","2,205"
+Ran on worker,"1,684","1,677","1,477"
+Scheduler offload %,34.23,34.57,55.90
+Master GPU duty %,99,99,77
+Worker GPU duty %,99,99,99
+Master avg temp (C),46.54,53.85,55.94
+Master max temp (C),51.5,57.5,57.5
+Nano 1 max temp (C),42.5,43.0,43.0

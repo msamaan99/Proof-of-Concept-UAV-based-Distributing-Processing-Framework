@@ -1,0 +1,51 @@
+[Unit]
+Description=UAV swarm Pi camera sensor
+# The link supervisor should be up first so the socket has somewhere to go, but
+# Wants rather than Requires: the sensor is perfectly capable of waiting for the
+# network on its own, and coupling them means one failing takes out both.
+Wants=nanonet-link.service
+After=nanonet-link.service network.target
+
+# These two live in [Unit], not [Service] — they moved in systemd 229 and the
+# Pis run 257.  In [Service] they are silently ignored, which is worse than
+# absent: the file reads as if there is a restart limit and there is not.
+#
+# Do not let a board that cannot open its camera restart in a tight loop for
+# the whole demo.  Five starts in a minute is generous for a real fault and
+# still stops the journal filling.  If it does trip, the fix is the camera, and
+# `systemctl reset-failed pi-sensor` clears it.
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=PI_USER
+WorkingDirectory=/home/PI_USER/pi_sensor
+
+# PI_SENSOR_ID is the one setting that MUST differ between the two boards.
+# Both Pis running the same id makes the master's frame store collide and
+# silently corrupts the run, so it is set here, per board, where it is visible
+# in `systemctl cat` rather than buried in a shell history.
+Environment=PI_SENSOR_ID=SENSOR_ID_VALUE
+# 15 for the demo.  pi_sensor.py's own default is 20 and its comment block
+# explains why that number was chosen for the scheduler comparison runs; this
+# line is the per-deployment override and always wins, so the file keeps its
+# documented default and the demo gets the rate it is tuned for.
+Environment=PI_TARGET_FPS=15
+Environment=PI_JPEG_QUALITY=80
+Environment=PYTHONUNBUFFERED=1
+
+ExecStart=/usr/bin/python3 /home/PI_USER/pi_sensor/pi_sensor.py
+
+# Restart on everything, including a clean exit.  The sensor has no successful
+# terminal state — if it stopped, something is wrong, and the recovery is the
+# same restart that has been fixing it by hand.  Exit code 3 is the watchdog
+# deciding it is wedged; that is precisely the case this must restart from.
+Restart=always
+RestartSec=3
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

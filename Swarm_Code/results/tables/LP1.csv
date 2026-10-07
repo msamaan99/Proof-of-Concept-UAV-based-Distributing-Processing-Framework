@@ -1,0 +1,30 @@
+Metric,Lyapunov
+GCS log,042
+Arrival rate (fps),15.0
+Run duration (s),333
+Total frames,"5,000"
+Delivered,"5,000"
+Dropped,0
+Drop %,0.00
+Drop reasons,none
+Sequence gaps,1
+Out-of-order %,2.72
+Avg latency (ms),73.06
+P95 (ms),101.60
+P99 (ms),199.20
+Max (ms),745.4
+Std deviation (ms),33.39
+Avg network RTT (ms),1.80
+Avg decision overhead (ms),0.1679
+Median infer master (ms),50.40
+Median infer worker (ms),66.50
+k = worker/master,1.32
+p* predicted,43.11%
+Ran on master,"4,353"
+Ran on worker,647
+Scheduler offload %,12.94
+Master GPU duty %,70
+Worker GPU duty %,17
+Master avg temp (C),44.28
+Master max temp (C),49.5
+Nano 1 max temp (C),36.0

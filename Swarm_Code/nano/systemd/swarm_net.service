@@ -1,0 +1,34 @@
+[Unit]
+Description=UAV Swarm Network Layer (forms NanoNet, claims or joins the AP)
+# Wants, not Requires: if NetworkManager restarts this must keep running and
+# wait for it, not be torn down alongside it.
+Wants=NetworkManager.service
+After=NetworkManager.service
+
+[Service]
+Type=simple
+# Root is mandatory. This daemon runs `nmcli connection up`, which cannot
+# activate an access-point profile as an unprivileged user. It is also why this
+# unit does nothing else: no model, no ZMQ, no application sockets.
+User=root
+WorkingDirectory=/home/NANO_USER/yolov5/swarm
+ExecStart=/usr/bin/python3 /home/NANO_USER/yolov5/swarm/swarm_net.py
+
+# OpenBLAS misdetects the Cortex-A57 and kills Python with SIGILL — no
+# traceback, no output at all. swarm_net.py does not import numpy today, but it
+# shares a directory with code that does and the cost of setting it is zero.
+Environment=OPENBLAS_CORETYPE=ARMV8
+# Without this, journalctl shows nothing until Python happens to flush, which
+# for a daemon that logs every 15 s reads as a dead service.
+Environment=PYTHONUNBUFFERED=1
+
+# The network layer has no successful terminal state. If it exits for any
+# reason, including cleanly, the swarm has no network — bring it straight back.
+Restart=always
+RestartSec=3
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
