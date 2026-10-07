@@ -381,10 +381,10 @@ Working, and measured. Read `docs/05-results.md` before quoting anything. In sho
 
 **Project:** Proof-of-Concept Development of a UAV-Based Distributed Processing
 Framework
-**Author:** GC Muhammad Samaan · CMS 432625 · 99th (B) EC
+**Author:** Muhammad Samaan · CMS 432625 · 99th (B) EC
 **Institution:** College of Aeronautical Engineering, PAF Academy Asghar Khan,
 Risalpur
-**Advisors:** S/L Dr. Ahnaf Lodhi · W/C Atif Shahzad
+**Advisors:** Dr. Ahnaf Lodhi · Engr. Atif Shahzad
 
 Project deliverables, per the Project Definition Document:
 
